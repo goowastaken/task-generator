@@ -3,7 +3,7 @@
     <!-- <h1>Hello World</h1> -->
     <Header subtitle="Manage your task now"/>
     <br>
-    <Tasks  :tasks="tasks"/>
+    <Tasks @task-delete="deleteTask" :tasks="tasks"/>
     
   </div>
 
@@ -28,6 +28,20 @@ export default {
   data(){
     return{
       tasks: []
+    }
+  },
+  methods:{
+    // Create a method that deletes the task
+    // Reassigns the tasks attribute to the tasks which doesn't have the same id 
+    // as the one deleted (returns everything but the deleted one)
+    deleteTask(id){
+      if (confirm('Are you sure to delete this task?')){
+        this.tasks = this.tasks.filter(
+          (task)=>{
+            return task.id !== id }
+        )
+
+      }
     }
   },
   created(){
