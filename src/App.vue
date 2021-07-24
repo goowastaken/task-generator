@@ -1,10 +1,13 @@
 <template>
   <div class="container">
     <!-- <h1>Hello World</h1> -->
-    <Header subtitle="Manage your task now"/>
+    <Header @toggle-add-task="toggleAddTask" subtitle="Manage your task now"
+    :showAddTask="showAddTask"/>
     <br>
-    <AddTask
-    @add-task='addTask'/>
+    <div v-if="showAddTask">
+
+    <AddTask @add-task='addTask'/>
+    </div>
     <Tasks
     @toggle-reminder='toggleReminder' 
     @task-delete="deleteTask" :tasks="tasks"/>
@@ -33,11 +36,15 @@ export default {
   },
   data(){
     return{
-      tasks: []  
-      // TODO: Still needs a backed, because it's not saved sadge 
+      tasks: [],
+      showAddTask: false
+      // TODO: Still needs a backend, because it's not saved sadge 
     }
   },
   methods:{ 
+    toggleAddTask(){
+      this.showAddTask = !this.showAddTask
+    },
     // Create a new task and add it to the tasks array
     addTask(newTask){
       this.tasks.push(newTask)
@@ -69,7 +76,8 @@ export default {
         task => task.id === id ? {
           ...task, reminder: !task.reminder} : task  // Returns the task itself, but changes the reminder attr
       )
-    }
+    },
+    
   },
   created(){
     this.tasks = [

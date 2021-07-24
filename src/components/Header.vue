@@ -3,7 +3,10 @@
     <h1>
         {{title}} 
     </h1>
-    <Button title='Add task' />
+    <Button @toggle-add-task='$emit("toggle-add-task")' 
+            :title="showAddTask ? 'Close' : 'Add Task'"
+            :color="showAddTask ? '#E84855': '#1B998B'"/>
+
 </div>
     
 <div id='sub'>
@@ -20,7 +23,7 @@ import Button from './Button.vue'
 export default {
     name: 'Header',
     props:{
-
+        showAddTask:Boolean,
         title: {
             type: String,
             default: "Task Generator 20XX"
@@ -32,7 +35,8 @@ export default {
     },
     components:{
         Button
-    }
+    },
+    emits:['toggle-add-task']
     
 }
 </script>
