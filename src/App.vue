@@ -3,7 +3,11 @@
     <!-- <h1>Hello World</h1> -->
     <Header subtitle="Manage your task now"/>
     <br>
-    <Tasks @task-delete="deleteTask" :tasks="tasks"/>
+    <AddTask
+    @add-task='addTask'/>
+    <Tasks
+    @toggle-reminder='toggleReminder' 
+    @task-delete="deleteTask" :tasks="tasks"/>
     
   </div>
 
@@ -16,6 +20,7 @@
 // import HelloWorld from './components/HelloWorld.vue'
 import Header from './components/Header.vue'
 import Tasks from './components/Tasks.vue'
+import AddTask from './components/AddTask.vue'
 
 
 export default {
@@ -23,17 +28,26 @@ export default {
   components: {
     // HelloWorld
     Header,
-    Tasks
+    Tasks,
+    AddTask
   },
   data(){
     return{
-      tasks: []
+      tasks: []  
+      // TODO: Still needs a backed, because it's not saved sadge 
     }
   },
-  methods:{
-    // Create a method that deletes the task
-    // Reassigns the tasks attribute to the tasks which doesn't have the same id 
-    // as the one deleted (returns everything but the deleted one)
+  methods:{ 
+    // Create a new task and add it to the tasks array
+    addTask(newTask){
+      this.tasks.push(newTask)
+    },
+    /*
+    a method that deletes a selected task
+    Reassigns the tasks attribute to the tasks which doesn't have the same id 
+    as the one deleted (returns everything but the deleted one). 
+    Uses filter function to delete elements
+    */
     deleteTask(id){
       if (confirm('Are you sure to delete this task?')){
         this.tasks = this.tasks.filter(
@@ -42,6 +56,19 @@ export default {
         )
 
       }
+    },
+    /* 
+    Method to toggle the reminder attribute of a task
+    if its id matches with the parameter, otherwise 
+    return the task unchanged.
+    Uses map function to re-map the tasks array
+    */
+
+    toggleReminder(id){
+      this.tasks = this.tasks.map(
+        task => task.id === id ? {
+          ...task, reminder: !task.reminder} : task  // Returns the task itself, but changes the reminder attr
+      )
     }
   },
   created(){
